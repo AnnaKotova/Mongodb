@@ -1,8 +1,13 @@
 Mongodb::Application.routes.draw do
-  root :to => "users#new"
+   root to: "static_pages#index"
+  devise_for :admin_users, ActiveAdmin::Devise.config
+  ActiveAdmin.routes(self)
+
+  
+   
   resources :users
   resources :sessions, only: [:new, :create, :destroy]
-  
+  match '/home', to: "users#home"
   match '/signup',  to: 'users#new'
   match '/signin',  to: 'sessions#new'
   match '/signout', to: 'sessions#destroy', via: :delete

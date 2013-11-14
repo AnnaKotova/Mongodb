@@ -5,8 +5,10 @@ class SessionsController < ApplicationController
 
   def create
   	user = User.where(:email => params[:session][:email].downcase).first
- 	 if user && user.authenticate(params[:session][:name])
-  	  # Sign the user in and redirect to the user's show page.
+    name = User.where(:name => params[:session][:name]).first
+ 	 if name && user && user.id == name.id
+  	  sign_in user
+      redirect_back_or user
  	 else
   	   flash.now[:error] = 'Invalid name/email combination' # Not quite right!
       render 'new'
@@ -14,5 +16,7 @@ class SessionsController < ApplicationController
   end
 
   def destroy
+    sign_out
+    redirect_to root_url
   end
 end
