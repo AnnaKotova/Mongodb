@@ -3,7 +3,7 @@ class User
   field :remember_token, type: String
   field :name, type: String
   field :email, type: String
-  field :admin, type: Boolean, default: false
+ # field :admin, type: Boolean, default: false
 
   before_save { |user| user.email = email.downcase }
   before_save :create_remember_token

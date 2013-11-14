@@ -18,7 +18,7 @@ class UsersController < ApplicationController
   def create
   	  @user = User.new(params[:user])
     if @user.save
-      sign_in @user
+      sign_in_ @user
       flash[:success] = "Welcome!"
       redirect_to @user
     else
@@ -26,11 +26,17 @@ class UsersController < ApplicationController
     end
   end
 
+  def edit
+  end
+
+  def update
+  end
+
   private
 
     def signed_in_user
       store_location
-      redirect_to signin_url, notice: "Please sign in." unless signed_in?
+      redirect_to signin_url, notice: "Please sign in." unless signed_in_?
     end
 
     def correct_user
