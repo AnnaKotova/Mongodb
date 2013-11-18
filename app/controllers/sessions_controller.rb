@@ -4,13 +4,12 @@ class SessionsController < ApplicationController
   end
 
   def create
-  	user = User.where(:email => params[:session][:email].downcase).first
-    name = User.where(:name => params[:session][:name]).first
- 	 if name && user && user.id == name.id
+  	user = User.where(:email => params[:session][:email]).first
+   if user && user.authenticate(params[:session][:password])
   	  sign_in_ user
       redirect_back_or user
  	 else
-  	   flash.now[:error] = 'Invalid name/email combination' # Not quite right!
+  	   flash.now[:error] = 'Invalid password/email combination' # Not quite right!
       render 'new'
 	 end
   end
