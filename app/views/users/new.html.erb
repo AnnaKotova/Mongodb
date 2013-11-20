@@ -2,21 +2,128 @@
 
 <div class="row">
   <div class="span6 offset3">
+    <div class="messenger" id = "messenger"> </div>
     <%= form_for(@user) do |f| %>
 		<%= render 'shared/error_messages' %>
+
         <%= f.label :name %>
-      <%= f.text_field :name %>
+      <%= f.text_field :name, :class =>'rfield', :id => "name" %> <span class="messenger"  id = "messenger_name"> </span>
     <br />
       <%= f.label :email %>
-      <%= f.text_field :email %>
+      <%= f.text_field :email, :class =>'rfield', :id => "email" %><span class="messenger" id = "messenger_email"> </span>
     <br />
      <%= f.label :password %>
-      <%= f.password_field :password %>
+      <%= f.password_field :password, :class =>'rfield', :id => "password" %><span class="messenger" id = "messenger_password"> </span>
     <br />
      <%= f.label :password_confirmation %>
-      <%= f.password_field :password_confirmation %>
+      <%= f.password_field :password_confirmation, :class =>'rfield', :id => "password_confirmation" %><span class="messenger" id = "messenger_password_confirmation"> </span>
     <br />
       <%= f.submit "Create my account", class: "btn btn-large btn-primary" %>
     <% end %>
   </div>
 </div>
+
+<script>
+var error = new Array(3);
+
+  $("#name").change(function(){
+    error[0]=0;
+    if (!$(this).val()){
+      $("#messenger_"+ $(this).attr('id')).html(" Enter name");
+      $(this).css('border', 'red 1px solid');
+    }
+    else{
+      if($(this).val().length < 4){
+        $("#messenger_"+ $(this).attr('id')).html(" Length must be more then 4  characters");
+        $(this).css('border', 'red 1px solid');
+      }
+      else{
+        $("#messenger_"+ $(this).attr('id')).html("");
+        $(this).css('border', 'grey 1px solid'); 
+        error[0]=1; 
+      };
+    }; 
+   });
+
+  $("#email").change(function(){
+    error[1]=0;
+    if (!$(this).val()){
+      $("#messenger_"+ $(this).attr('id')).html(" Enter email");
+      $(this).css('border', 'red 1px solid');
+    }
+    else{
+      var email = $(this).val();
+          if(!isValidEmailAddress(email)){
+            $("#messenger_"+ $(this).attr('id')).html(" Invalid email");
+            $(this).css('border', 'red 1px solid');
+          }
+        else{
+        $("#messenger_"+ $(this).attr('id')).html("");
+        $(this).css('border', 'grey 1px solid');  
+        error[1]=1;
+      };  
+    };
+  });
+
+  $("#password").change(function(){
+    error[2]=0;
+    if (!$(this).val()){
+      $("#messenger_"+ $(this).attr('id')).html(" Enter password");
+      $(this).css('border', 'red 1px solid');
+    }
+    else{
+       if($(this).val().length < 6){
+        $("#messenger_"+ $(this).attr('id')).html(" Length must be more then 5  characters");
+        $(this).css('border', 'red 1px solid');
+        $(this).val('');
+      }
+      else{
+        $("#messenger_"+ $(this).attr('id')).html("");
+        $(this).css('border', 'grey 1px solid'); 
+        error[2]=1; 
+      };
+    };
+  });
+
+  $("#password_confirmation").change(function(){
+      error[3]=0;
+      if (!$(this).val()){
+      $("#messenger_"+ $(this).attr('id')).html(" Enter password");
+      $(this).css('border', 'red 1px solid');
+    }
+    else{
+      if ($("#password").val() != $(this).val()){
+        $("#messenger_"+ $(this).attr('id')).html(" Invalid password confirmation");
+        $(this).css('border', 'red 1px solid'); 
+        $(this).val('');
+      }
+      else{
+        $("#messenger_"+ $(this).attr('id')).html("");
+        $(this).css('border', 'grey 1px solid');
+        error[3]=1;
+      };
+    };
+  });
+  
+$("form").submit(function() {
+  $("#messenger").html("");
+  if (!$("#name").val() || !$("#email").val() || !$("#password").val() || !$("#password_confirmation").val() ){
+    $("#messenger").html(" Enter all field");
+    return false;
+  }
+  else{
+    for(var i=0; i<error.length; i++) {
+      if (error[i] == 0){
+       return false; 
+      };
+    };
+    return true;  
+  };
+});
+
+
+function isValidEmailAddress(emailAddress) {
+    var pattern = new RegExp(/^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/i);
+    return pattern.test(emailAddress);
+    };
+</script>

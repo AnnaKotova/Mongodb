@@ -4,6 +4,7 @@ class UsersController < ApplicationController
   
   def home
     #@user = User.find(params[:id])
+    redirect_to  :controller => 'sessions', :action => 'new'
   end
   
   def index
@@ -20,33 +21,31 @@ class UsersController < ApplicationController
   def create
   	  @user = User.new(params[:user])
     if @user.save
-      UserMailer.welcome_email(@user).deliver
-      sign_in_ @user
-      flash[:success] = "Welcome!"
-      redirect_to @user
+     #UserMailer.welcome_email(@user).deliver
+      #sign_in_ @user
+      flash[:notice] = "Signup successful. Activation e-mail has been sent"
+      redirect_to  :controller => 'sessions', :action => 'new'
+     #render 'new'
+     # flash[:success] = "Welcome!"
+      #redirect_to "signed_in_"
+      
     else
       render 'new'
     end
-
-#if not_wanted?(@user.email.to_s)  # user submitted an email address from a web mail host
-#        flash[:warning] = "Your email address appears to be web based"
-#       render  :action => 'new'
-#   elsif @user.save
-#        @user.send_activate
-#        flash[:notice] = "Signup successful. Activation e-mail has been sent"
-#        redirect_to  :controller => 'logins', :action => 'login'
-#    else
-#        flash[:warning] = "Please try again - problems saving your details to the database"
-#        render :action => 'new'
-#    end
-
-
   end
 
   def edit
   end
 
   def update
+  end
+
+
+def accept_invitation
+      @user = User.find_by_email_token(params[:email_token])
+      @user.email_activation_token = true
+      @user.save
+      redirect_to root_url, :notice => "Email has been verified."
   end
 
   private

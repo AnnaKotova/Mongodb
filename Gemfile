@@ -12,6 +12,8 @@ gem 'nokogiri'
 gem 'bootstrap-sass', '2.1'
 gem 'bootstrap-will_paginate'
 gem 'bcrypt-ruby', '3.0.1'
+#gem "jquery-validation-rails"
+#gem "jquery-form-rails", "~> 1.0.1"
   #gem 'activeadmin-mongoid'
 
 # Bundle edge Rails instead:

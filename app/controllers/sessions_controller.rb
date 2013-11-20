@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+#before_filter :authentication, only: [:new,:create]
 
   def new
   end
@@ -18,4 +19,5 @@ class SessionsController < ApplicationController
     sign_out_
     redirect_to root_url
   end
+
 end
